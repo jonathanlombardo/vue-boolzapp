@@ -33,6 +33,9 @@
     <!-- # VUE -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
+    <!-- LUXON -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+
     <!-- --MY CSS -->
     <link rel="stylesheet" href="./CSS/style.css" />
 
@@ -70,11 +73,11 @@
             <div id="filter-contacts" class="search-wrapper p-2">
               <div class="input-group">
                 <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input v-model="searchText" type="text" class="form-control" placeholder="Search" aria-label="Search" />
+                <input v-model="searchText" type="text" class="form-control" placeholder="Search" aria-label="Search" @input="setContactVisibility()" />
               </div>
             </div>
             <div id="threads-wrapper">
-              <div v-for="contact in filteredContants" class="thread" @click="activeContact = contact">
+              <div v-for="(contact, index) in contacts" v-show="contact.visible" class="thread" @click="activeContactIndex = index">
                 <div class="user-details h-100">
                   <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
                   <div class="contact-name">
@@ -82,7 +85,7 @@
                     <div class="subtitle">{{getLastMessage(contact)}}</div>
                   </div>
                 </div>
-                <div class="last-msg-date">{{contact.messages[0].date}}</div>
+                <div class="last-msg-date">{{getLastMessageDate(contact)}}</div>
               </div>
             </div>
           </div>
@@ -113,7 +116,7 @@
               <div class="options-wrapper">
                 <i class="fa-regular fa-face-smile"></i>
               </div>
-              <input type="text" class="form-control" placeholder="Scrivi un messaggio" />
+              <input v-model="activeContact.draft" type="text" class="form-control" placeholder="Scrivi un messaggio" @keyup.enter="sendMessage()" />
               <div class="options-wrapper">
                 <i class="fa-solid fa-microphone"></i>
               </div>

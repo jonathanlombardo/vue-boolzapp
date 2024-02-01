@@ -168,17 +168,15 @@ const app = createApp({
       ],
 
       searchText: "",
-
-      activeContact: {},
+      activeContactIndex: 0,
     };
   },
 
   // ...
 
   computed: {
-    filteredContants() {
-      const filteredContants = this.contacts.filter((contact) => contact.name.toLowerCase().includes(this.searchText.toLowerCase().trim()));
-      return filteredContants;
+    activeContact() {
+      return this.getContactFromIndex(this.activeContactIndex);
     },
   },
 
@@ -193,13 +191,44 @@ const app = createApp({
     getLastMessage(contact) {
       return contact.messages[contact.messages.length - 1].message;
     },
+
+    getLastMessageDate(contact) {
+      return contact.messages[contact.messages.length - 1].date;
+    },
+
+    getContactFromIndex(index) {
+      return this.contacts[index];
+    },
+
+    setContactVisibility() {
+      for (let contact of this.contacts) {
+        contact.visible = contact.name.toLowerCase().includes(this.searchText.toLowerCase().trim());
+      }
+    },
+
+    sendMessage() {
+      const message = {
+        date: "10/01/2020 15:50:00",
+        message: this.activeContact.draft,
+        status: "sent",
+      };
+
+      this.activeContact.messages.push(message);
+      this.activeContact.draft = "";
+
+      setTimeout(() => {
+        const answer = {
+          date: "10/01/2020 15:50:00",
+          message: "risposta automatica",
+          status: "received",
+        };
+
+        this.activeContact.messages.push(answer);
+      }, 1000);
+    },
   },
 
   // ...
-
-  beforeMount() {
-    this.activeContact = this.filteredContants[0];
-  },
 
   mounted() {
     console.log("app mounted");
