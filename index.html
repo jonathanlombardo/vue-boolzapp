@@ -44,7 +44,7 @@
     <div id="app">
       <div id="chat-wrapper" class="container">
         <div class="row h-100 g-0">
-          <div class="col-4 d-flex flex-column border border-right-1">
+          <div class="col-4 h-100 d-flex flex-column border border-right-1">
             <div id="user-wrapper" class="bar">
               <div class="user-details h-100">
                 <img src="./img/avatar_io.jpg" alt="My profile picture" class="avatar" />
@@ -69,24 +69,24 @@
             </div>
             <div id="filter-contacts" class="search-wrapper p-2">
               <div class="input-group">
-                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" />
+                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input v-model="searchText" type="text" class="form-control" placeholder="Search" aria-label="Search" />
               </div>
             </div>
             <div id="threads-wrapper">
-              <div class="thread">
+              <div v-for="contact in filteredContants" class="thread">
                 <div class="user-details h-100">
-                  <img src="./img/avatar_1.jpg" alt="My profile picture" class="avatar" />
+                  <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
                   <div class="contact-name">
-                    <div class="title">Receiver Name</div>
-                    <div class="subtitle">Last Message</div>
+                    <div class="title">{{contact.name}}</div>
+                    <div class="subtitle">{{contact.messages[contact.messages.length - 1].message}}</div>
                   </div>
                 </div>
-                <div class="last-msg-date">12:59</div>
+                <div class="last-msg-date">{{contact.messages[0].date}}</div>
               </div>
             </div>
           </div>
-          <div class="col-8 d-flex flex-column">
+          <div class="col-8 h-100 d-flex flex-column">
             <div id="receiver-wrapper" class="bar">
               <div class="user-details h-100">
                 <img src="./img/avatar_1.jpg" alt="My profile picture" class="avatar" />

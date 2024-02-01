@@ -158,12 +158,14 @@
 
 #chat-wrapper {
   height: calc(100% - 40px);
+  overflow: hidden;
 }
 
 #threads-wrapper,
 #thread-messages {
   background-color: var(--wrapper-primary-color);
   flex-grow: 1;
+  overflow: auto;
 }
 
 #threads-wrapper > .thread {
