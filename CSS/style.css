@@ -187,6 +187,30 @@
   background-image: url(../img/mine.jpg);
 }
 
+#thread-messages > .message-wrapper {
+  padding: 10px 30px;
+}
+
+#thread-messages > .message-wrapper.sent {
+  text-align: end;
+}
+
+#thread-messages .message-box {
+  border-radius: 10px;
+  display: inline-block;
+  padding: 5px 15px;
+  background-color: var(--bg-msg-received-color);
+  max-width: min(80%, 500px);
+}
+
+#thread-messages > .message-wrapper.sent .message-box {
+  background-color: var(--bg-msg-sent-color);
+}
+
+/* message-wrapper
+message-text
+message-date */
+
 #writing-wrapper {
   gap: var(--space-m);
   padding-left: var(--space-m);
