@@ -185,20 +185,24 @@ const app = createApp({
   methods: {
     srcToJpg(src) {
       const length = src.length - 3;
-      // console.log(src);
-      // console.log(length);
       src = src.substring(0, length);
       src += "jpg";
       return src;
+    },
+
+    getLastMessage(contact) {
+      return contact.messages[contact.messages.length - 1].message;
     },
   },
 
   // ...
 
+  beforeMount() {
+    this.activeContact = this.filteredContants[0];
+  },
+
   mounted() {
     console.log("app mounted");
-
-    this.activeContact = this.filteredContants[0];
   },
 });
 

@@ -74,12 +74,12 @@
               </div>
             </div>
             <div id="threads-wrapper">
-              <div v-for="contact in filteredContants" class="thread">
+              <div v-for="contact in filteredContants" class="thread" @click="activeContact = contact">
                 <div class="user-details h-100">
                   <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
                   <div class="contact-name">
                     <div class="title">{{contact.name}}</div>
-                    <div class="subtitle">{{contact.messages[contact.messages.length - 1].message}}</div>
+                    <div class="subtitle">{{getLastMessage(contact)}}</div>
                   </div>
                 </div>
                 <div class="last-msg-date">{{contact.messages[0].date}}</div>
@@ -89,10 +89,10 @@
           <div class="col-8 h-100 d-flex flex-column">
             <div id="receiver-wrapper" class="bar">
               <div class="user-details h-100">
-                <img src="./img/avatar_1.jpg" alt="My profile picture" class="avatar" />
+                <img :src="srcToJpg(activeContact.avatar)" :alt="activeContact.name + ' picture'" class="avatar" />
                 <div class="contact-name">
-                  <div class="title">Receiver Name</div>
-                  <div class="subtitle">Ultimo messaggio</div>
+                  <div class="title">{{activeContact.name}}</div>
+                  <div class="subtitle">{{getLastMessage(activeContact)}}</div>
                 </div>
               </div>
               <div class="options-wrapper">
@@ -102,24 +102,10 @@
               </div>
             </div>
             <div id="thread-messages">
-              <div class="message-wrapper sent">
+              <div v-for="message in activeContact.messages" class="message-wrapper" :class="{'sent' : message.status == 'sent'}">
                 <div class="message-box">
-                  <div class="message-text">Ciao, Come stai?</div>
-                  <div class="message-date">15:00</div>
-                </div>
-              </div>
-
-              <div class="message-wrapper sent">
-                <div class="message-box">
-                  <div class="message-text">Tutto Bene?</div>
-                  <div class="message-date">15:00</div>
-                </div>
-              </div>
-
-              <div class="message-wrapper">
-                <div class="message-box">
-                  <div class="message-text">Tutto bene e tu?</div>
-                  <div class="message-date">15:00</div>
+                  <div class="message-text">{{message.message}}</div>
+                  <div class="message-date">{{message.date}}</div>
                 </div>
               </div>
             </div>
