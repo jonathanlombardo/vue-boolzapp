@@ -188,7 +188,8 @@
 }
 
 #thread-messages > .message-wrapper {
-  padding: 10px 30px;
+  padding: 0 30px;
+  margin: 10px 0;
 }
 
 #thread-messages > .message-wrapper.sent {
@@ -205,6 +206,17 @@
 
 #thread-messages > .message-wrapper.sent .message-box {
   background-color: var(--bg-msg-sent-color);
+}
+
+#thread-messages > .message-wrapper .message-date {
+  font-size: var(--text-s);
+  opacity: 0.4;
+  font-weight: bold;
+  text-align: start;
+}
+
+#thread-messages > .message-wrapper.sent .message-date {
+  text-align: end;
 }
 
 /* message-wrapper
