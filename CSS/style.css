@@ -1,0 +1,51 @@
+/* -- RESET */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lato", sans-serif;
+}
+
+/* --CUSTOM PROPS */
+
+:root {
+  --text-m: 1.5rem;
+  --space-m: 8px;
+
+  --li-margin: 1em; /* margini lista FontAwesome */
+  --li-width: 1.5em; /* markerwidth lista FontAwesome */
+
+  /* palet */
+  --bg-primary-color: #009688;
+  --bg-secondary-color: #dadbd4;
+  --bg-bar-color: #eaeaea;
+  --bg-info-color: #8edafc;
+  --bg-msg-sent-color: #d5f9ba;
+  --bg-msg-received-color: #ffffff;
+  --icon-primary-color: #6b7376;
+  --icon-secondary-color: #b1b1b1;
+  --icon-info-color: #8edafc;
+}
+
+/* -- DEBUG */
+
+.db {
+  background-color: rgba(255, 0, 0, 0.236);
+  border: 3px dashed black;
+  background-clip: content-box;
+  /* min-height: 50px; */
+}
+
+.db-content > * {
+  background-color: rgba(255, 0, 0, 0.236);
+  border: 2px dotted black;
+  background-clip: content-box;
+  /* min-height: 50px; */
+}
+
+.db i::after {
+  content: "ℹ️";
+}
+
+/* ---------------------------------------- */
