@@ -34,13 +34,14 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <!-- LUXON -->
-    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
-    <script src="luxon.js" defer></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script> -->
+    <!-- <script src="luxon.js" defer></script> -->
 
     <!-- --MY CSS -->
     <link rel="stylesheet" href="./CSS/style.css" />
 
     <!-- --MY SCRIPT -->
+    <script src="./JS/myfunction.js" defer></script>
     <script src="./JS/main.js" defer></script>
   </head>
 
@@ -83,10 +84,11 @@
                 <div class="user-details h-100">
                   <div class="contact-name">
                     <div class="title">{{contact.name}}</div>
-                    <div class="subtitle">{{getLastMessage(contact)}}</div>
+                    <div class="subtitle">{{getLastMessageText(contact)}}</div>
                   </div>
                 </div>
-                <div class="last-msg-date">{{getLastMessageDate(contact)}}</div>
+                <div v-if="isSentToday(getLastMessage(contact))" class="last-msg-date">{{getTime(getLastMessage(contact))}}</div>
+                <div v-else class="last-msg-date">{{getDayTime(getLastMessage(contact))}}</div>
               </div>
             </div>
           </div>
@@ -96,7 +98,8 @@
                 <img :src="srcToJpg(activeContact.avatar)" :alt="activeContact.name + ' picture'" class="avatar" />
                 <div class="contact-name">
                   <div class="title">{{activeContact.name}}</div>
-                  <div v-if="getLastMessageReceivedDate(activeContact) != ''" class="subtitle">Ultimo accesso: {{getLastMessageReceivedDate(activeContact)}}</div>
+                  <div v-if="isSentToday(getLastMessageReceived(activeContact))" class="subtitle">Ultimo accesso: oggi alle {{getTime(getLastMessageReceived(activeContact))}}</div>
+                  <div v-else-if="getDayTime(getLastMessageReceived(activeContact)) != ''" class="subtitle">Ultimo accesso: {{getDayTime(getLastMessageReceived(activeContact), true)}}</div>
                 </div>
               </div>
               <div class="options-wrapper">
@@ -116,7 +119,7 @@
                     </div>
                   </div>
                   <div class="message-text">{{message.message}}</div>
-                  <div class="message-date">{{message.date}}</div>
+                  <div class="message-date">{{getTime(message)}}</div>
                 </div>
               </div>
             </div>

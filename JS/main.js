@@ -183,6 +183,75 @@ const app = createApp({
   },
 
   methods: {
+    getTime(message) {
+      return `${this.getDate(message).hour}:${this.getDate(message).minute}`;
+    },
+
+    getDay(message) {
+      return `${this.getDate(message).day}/${this.getDate(message).month}`;
+    },
+
+    getDayTime(message, access = false) {
+      if (access) return `il ${this.getDay(message)} alle ${this.getTime(message)}`;
+      return `${this.getDay(message)} ${this.getTime(message)}`;
+    },
+
+    getDate(message) {
+      const date = message.date.split(" ")[0];
+      const time = message.date.split(" ")[1];
+
+      const day = date.split("/")[0];
+      const month = date.split("/")[1];
+      const year = date.split("/")[2];
+
+      const hour = time.split(":")[0];
+      const minute = time.split(":")[1];
+      const second = time.split(":")[2];
+
+      return {
+        day,
+        month,
+        year,
+        hour,
+        minute,
+        second,
+      };
+    },
+
+    getNow() {
+      const now = new Date();
+      const year = `${now.getFullYear()}`;
+      const month = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
+      const day = now.getDay() < 10 ? "0" + now.getDay() : now.getDay();
+      const hour = now.getHours() < 10 ? "0" + now.getHours() : now.getHours();
+      const minute = now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes();
+      const second = now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds();
+
+      return {
+        day,
+        month,
+        year,
+        hour,
+        minute,
+        second,
+      };
+    },
+
+    getNowString() {
+      let text = this.getNow().day;
+      text += `/${this.getNow().month}`;
+      text += `/${this.getNow().year}`;
+      text += ` ${this.getNow().hour}`;
+      text += `:${this.getNow().minute}`;
+      text += `:${this.getNow().second}`;
+
+      return text;
+    },
+
+    isSentToday(message) {
+      return this.getNow().year == this.getDate(message).year && this.getNow().month == this.getDate(message).month && this.getNow().day == this.getDate(message).day;
+    },
+
     srcToJpg(src) {
       const length = src.length - 3;
       src = src.substring(0, length);
@@ -190,23 +259,23 @@ const app = createApp({
       return src;
     },
 
-    getLastMessage(contact) {
+    getLastMessageText(contact) {
       if (!contact.messages.length) return "";
       return contact.messages[contact.messages.length - 1].message;
     },
 
-    getLastMessageDate(contact) {
+    getLastMessage(contact) {
       if (!contact.messages.length) return "";
-      return contact.messages[contact.messages.length - 1].date;
+      return contact.messages[contact.messages.length - 1];
     },
 
-    getLastMessageReceivedDate(contact) {
+    getLastMessageReceived(contact) {
       if (!contact.messages.length) return "";
 
       const receivedMessages = contact.messages.filter((message) => message.status == "received");
 
       if (!receivedMessages.length) return "";
-      return receivedMessages[receivedMessages.length - 1].date;
+      return receivedMessages[receivedMessages.length - 1];
     },
 
     getContactFromIndex(index) {
@@ -220,8 +289,10 @@ const app = createApp({
     },
 
     sendMessage() {
+      if (this.activeContact.draft.trim() == "") return;
+
       const message = {
-        date: "10/01/2020 15:50:00",
+        date: this.getNowString(),
         message: this.activeContact.draft,
         status: "sent",
       };
@@ -230,9 +301,32 @@ const app = createApp({
       this.activeContact.draft = "";
 
       setTimeout(() => {
+        let text;
+
+        switch (getRandomNumber(6)) {
+          case 1:
+            text = "Sono un bot, non posso rispondere";
+            break;
+          case 2:
+            text = "Come scusa?";
+            break;
+          case 3:
+            text = "Mi sa che hai sbagliato chat!";
+            break;
+          case 4:
+            text = "uummm... interessante";
+            break;
+          case 5:
+            text = "Vai a disturbare qualcun altro";
+            break;
+          case 6:
+            text = "Non ho capito, puoi ripetere?";
+            break;
+        }
+
         const answer = {
-          date: "10/01/2020 15:50:00",
-          message: "risposta automatica",
+          date: this.getNowString(),
+          message: text,
           status: "received",
         };
 
@@ -252,8 +346,14 @@ const app = createApp({
 
   // ...
 
+  updated() {
+    const wrapper = document.querySelector("#thread-messages");
+    wrapper.scrollTop = wrapper.clientHeight;
+  },
+
   mounted() {
-    console.log("app mounted");
+    const wrapper = document.querySelector("#thread-messages");
+    wrapper.scrollTop = wrapper.clientHeight;
   },
 });
 
