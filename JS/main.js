@@ -7,7 +7,7 @@ const app = createApp({
 
       contacts: [
         {
-          name: "Michele",
+          name: "Vincenzo the machine",
           avatar: "./img/avatar_1.png",
           visible: true,
           messages: [
@@ -29,7 +29,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Fabio",
+          name: "El Puccio",
           avatar: "./img/avatar_2.png",
           visible: true,
           messages: [
@@ -51,7 +51,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Samuele",
+          name: "Sere",
           avatar: "./img/avatar_3.png",
           visible: true,
           messages: [
@@ -73,7 +73,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Alessandro B.",
+          name: "Nick the bomber",
           avatar: "./img/avatar_4.png",
           visible: true,
           messages: [
@@ -90,7 +90,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Alessandro L.",
+          name: "Cappa",
           avatar: "./img/avatar_5.png",
           visible: true,
           messages: [
@@ -107,7 +107,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Claudia",
+          name: "Big Tia",
           avatar: "./img/avatar_6.png",
           visible: true,
           messages: [
@@ -129,7 +129,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Federico",
+          name: "Gigione Micco",
           avatar: "./img/avatar_7.png",
           visible: true,
           messages: [
@@ -146,7 +146,7 @@ const app = createApp({
           ],
         },
         {
-          name: "Davide",
+          name: "Er Tizzi",
           avatar: "./img/avatar_8.png",
           visible: true,
           messages: [
