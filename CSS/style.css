@@ -90,12 +90,19 @@
 
 .user-details .subtitle {
   font-size: var(--text-s);
-  opacity: 0.4;
+  color: rgba(0, 0, 0, 0.4);
   font-weight: bold;
+}
 
-  /* white-space: nowrap;
+.user-details .subtitle,
+.user-details .title {
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; */
+  text-overflow: ellipsis;
+}
+
+.user-details .contact-name {
+  overflow: hidden;
 }
 
 .bar > .options-wrapper > i {
@@ -133,8 +140,7 @@
 
 .alert-msg-wrapper > .subtext-msg {
   font-size: var(--text-s);
-  color: black;
-  opacity: 0.4;
+  color: rgba(0, 0, 0, 0.4);
 }
 
 .search-wrapper {
@@ -177,16 +183,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: var(--space-s);
 
   border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+}
+
+#threads-wrapper > .thread .user-details {
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 #threads-wrapper .last-msg-date {
   height: 100%;
   padding: var(--space-s);
   font-size: var(--text-s);
-  opacity: 0.4;
+  color: rgba(0, 0, 0, 0.4);
   font-weight: bold;
+  white-space: nowrap;
 }
 
 #thread-messages {
@@ -208,6 +221,54 @@
   padding: 5px 15px;
   background-color: var(--bg-msg-received-color);
   max-width: min(80%, 500px);
+
+  position: relative;
+}
+
+#thread-messages .message-box .message-options {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  /* width: 100%; */
+  text-align: end;
+
+  border-top-right-radius: 10px;
+  filter: brightness(0.95);
+  background-color: var(--bg-msg-received-color);
+  opacity: 0;
+
+  padding: 2px 10px;
+  font-size: var(--text-s);
+  cursor: pointer;
+
+  /* z-index: 1; */
+}
+
+#thread-messages .message-box:hover .message-options {
+  opacity: 1;
+}
+
+#thread-messages .message-wrapper.sent .message-options {
+  background-color: var(--bg-msg-sent-color);
+}
+
+#thread-messages .message-options .menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  /* z-index: 2; */
+  box-shadow: 0px 0px 4px 0px #9f9f9f;
+}
+
+#thread-messages .message-options .menu .option {
+  background-color: rgb(255, 255, 255);
+
+  padding: 5px 30px;
+  font-size: 1rem;
+
+  cursor: pointer;
+  /* z-index: 2; */
 }
 
 #thread-messages > .message-wrapper.sent .message-box {
@@ -216,13 +277,17 @@
 
 #thread-messages > .message-wrapper .message-date {
   font-size: var(--text-s);
-  opacity: 0.4;
+  color: rgba(0, 0, 0, 0.4);
   font-weight: bold;
   text-align: start;
 }
 
 #thread-messages > .message-wrapper.sent .message-date {
   text-align: end;
+}
+
+#thread-messages > .message-wrapper .message-text {
+  word-wrap: break-word;
 }
 
 /* message-wrapper

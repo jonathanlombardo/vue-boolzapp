@@ -3,6 +3,8 @@ const { createApp } = Vue;
 const app = createApp({
   data() {
     return {
+      userName: "Jonathan Lombardo",
+
       contacts: [
         {
           name: "Michele",
@@ -189,11 +191,22 @@ const app = createApp({
     },
 
     getLastMessage(contact) {
+      if (!contact.messages.length) return "";
       return contact.messages[contact.messages.length - 1].message;
     },
 
     getLastMessageDate(contact) {
+      if (!contact.messages.length) return "";
       return contact.messages[contact.messages.length - 1].date;
+    },
+
+    getLastMessageReceivedDate(contact) {
+      if (!contact.messages.length) return "";
+
+      const receivedMessages = contact.messages.filter((message) => message.status == "received");
+
+      if (!receivedMessages.length) return "";
+      return receivedMessages[receivedMessages.length - 1].date;
     },
 
     getContactFromIndex(index) {
@@ -225,6 +238,15 @@ const app = createApp({
 
         this.activeContact.messages.push(answer);
       }, 1000);
+    },
+
+    deleteMessage(contact, msgIndex) {
+      contact.messages.splice(msgIndex, 1);
+    },
+
+    copyMessage(message) {
+      const text = message.message;
+      navigator.clipboard.writeText(text);
     },
   },
 

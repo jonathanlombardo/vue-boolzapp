@@ -52,7 +52,7 @@
               <div class="user-details h-100">
                 <img src="./img/avatar_io.jpg" alt="My profile picture" class="avatar" />
                 <div class="contact-name">
-                  <div class="title">Receiver Name</div>
+                  <div class="title">{{userName}}</div>
                 </div>
               </div>
               <div class="options-wrapper">
@@ -78,8 +78,8 @@
             </div>
             <div id="threads-wrapper">
               <div v-for="(contact, index) in contacts" v-show="contact.visible" class="thread" @click="activeContactIndex = index">
+                <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
                 <div class="user-details h-100">
-                  <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
                   <div class="contact-name">
                     <div class="title">{{contact.name}}</div>
                     <div class="subtitle">{{getLastMessage(contact)}}</div>
@@ -95,7 +95,7 @@
                 <img :src="srcToJpg(activeContact.avatar)" :alt="activeContact.name + ' picture'" class="avatar" />
                 <div class="contact-name">
                   <div class="title">{{activeContact.name}}</div>
-                  <div class="subtitle">{{getLastMessage(activeContact)}}</div>
+                  <div v-if="getLastMessageReceivedDate(activeContact) != ''" class="subtitle">Ultimo accesso: {{getLastMessageReceivedDate(activeContact)}}</div>
                 </div>
               </div>
               <div class="options-wrapper">
@@ -105,8 +105,15 @@
               </div>
             </div>
             <div id="thread-messages">
-              <div v-for="message in activeContact.messages" class="message-wrapper" :class="{'sent' : message.status == 'sent'}">
+              <div v-for="(message, index) in activeContact.messages" class="message-wrapper" :class="{'sent' : message.status == 'sent'}">
                 <div class="message-box">
+                  <div class="message-options" :style="`z-index:${activeContact.messages.length - index}`" @click="message.menuVisible = true" @mouseleave="message.menuVisible = false">
+                    <i class="fa-solid fa-chevron-down"></i>
+                    <div v-if="message.menuVisible" class="menu" @mouseleave="message.menuVisible = false">
+                      <div class="option" @mousedown.once="copyMessage(message)" @mouseup="message.menuVisible = false">Copy</div>
+                      <div class="option" @click="deleteMessage(activeContact, index)">Delete</div>
+                    </div>
+                  </div>
                   <div class="message-text">{{message.message}}</div>
                   <div class="message-date">{{message.date}}</div>
                 </div>
