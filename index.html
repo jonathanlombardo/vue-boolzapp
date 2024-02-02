@@ -35,6 +35,7 @@
 
     <!-- LUXON -->
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <script src="luxon.js" defer></script>
 
     <!-- --MY CSS -->
     <link rel="stylesheet" href="./CSS/style.css" />
@@ -111,7 +112,7 @@
                     <i class="fa-solid fa-chevron-down"></i>
                     <div v-if="message.menuVisible" class="menu" @mouseleave="message.menuVisible = false">
                       <div class="option" @mousedown.once="copyMessage(message)" @mouseup="message.menuVisible = false">Copy</div>
-                      <div class="option" @click="deleteMessage(activeContact, index)">Delete</div>
+                      <div class="option" @mousedown.once="deleteMessage(activeContact, index)">Delete</div>
                     </div>
                   </div>
                   <div class="message-text">{{message.message}}</div>
