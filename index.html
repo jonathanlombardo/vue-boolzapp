@@ -91,7 +91,7 @@
                 <div class="contact-name">
                   <div class="title">{{activeContact.name}}</div>
                   <div v-if="isSentToday(getLastMessageReceived(activeContact))" class="subtitle">Ultimo accesso: oggi alle {{getTime(getLastMessageReceived(activeContact))}}</div>
-                  <div v-else-if="getDayTime(getLastMessageReceived(activeContact)) != ''" class="subtitle">Ultimo accesso: {{getDayTime(getLastMessageReceived(activeContact), true)}}</div>
+                  <div v-else-if="getDayTime(getLastMessageReceived(activeContact))" class="subtitle">Ultimo accesso: {{getDayTime(getLastMessageReceived(activeContact), true)}}</div>
                 </div>
               </div>
               <div class="options-wrapper">

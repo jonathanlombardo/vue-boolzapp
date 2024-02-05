@@ -192,19 +192,23 @@ const app = createApp({
     },
 
     getTime(message) {
+      if (!this.getDate(message)) return;
       return `${this.getDate(message).hour}:${this.getDate(message).minute}`;
     },
 
     getDay(message) {
+      if (!this.getDate(message)) return;
       return `${this.getDate(message).day}/${this.getDate(message).month}`;
     },
 
     getDayTime(message, access = false) {
+      if (!this.getDate(message)) return;
       if (access) return `il ${this.getDay(message)} alle ${this.getTime(message)}`;
       return `${this.getDay(message)} ${this.getTime(message)}`;
     },
 
     getDate(message) {
+      if (!message.date) return;
       const date = message.date.split(" ")[0];
       const time = message.date.split(" ")[1];
 
@@ -257,6 +261,7 @@ const app = createApp({
     },
 
     isSentToday(message) {
+      if (!this.getDate(message)) return;
       return this.getNow().year == this.getDate(message).year && this.getNow().month == this.getDate(message).month && this.getNow().day == this.getDate(message).day;
     },
 
