@@ -171,18 +171,18 @@
   overflow: hidden;
 }
 
-#threads-wrapper,
+#threads-overlayer,
 #thread-messages {
   background-color: var(--wrapper-primary-color);
   flex-grow: 1;
   overflow: auto;
 }
 
-.test {
+/* .test {
   overflow: auto;
   flex-grow: 1;
   background-color: var(--wrapper-primary-color);
-}
+} */
 
 #threads-wrapper {
   display: flex;

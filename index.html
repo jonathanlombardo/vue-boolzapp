@@ -71,7 +71,7 @@
               </div>
             </div>
 
-            <div class="test">
+            <div id="threads-overlayer">
               <div id="threads-wrapper">
                 <div v-for="(contact, index) in contacts" v-show="contact.visible && contact.onChat" class="thread" :class="contact == activeContact ? 'active' : ''" :style="`order: ${contact.order}`" @click="contactClickHandler(index)">
                   <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
