@@ -410,10 +410,11 @@ const app = createApp({
     this.scrollMessages();
     this.scrollThreads();
 
-    // set drafts
+    // init contacts
 
     this.contacts.forEach((contact) => {
       contact.draft = "";
+      if (contact.messages) contact.onChat = true;
     });
 
     // set threads order

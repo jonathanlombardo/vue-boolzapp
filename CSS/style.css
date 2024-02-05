@@ -178,6 +178,12 @@
   overflow: auto;
 }
 
+.test {
+  overflow: auto;
+  flex-grow: 1;
+  background-color: var(--wrapper-primary-color);
+}
+
 #threads-wrapper {
   display: flex;
   flex-direction: column-reverse;
