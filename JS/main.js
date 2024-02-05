@@ -174,6 +174,8 @@ const app = createApp({
       orderIndex: 0,
       updateScroll: false,
       updateThreadScroll: false,
+      noChats: false,
+      addressBook: false,
     };
   },
 
@@ -186,6 +188,16 @@ const app = createApp({
   },
 
   methods: {
+    contactAddressClickHandler(contact, index) {
+      contact.onChat = true;
+      this.contactClickHandler(index);
+      this.addressBook = false;
+    },
+
+    toggleAddressBook() {
+      this.addressBook = !this.addressBook;
+    },
+
     contactClickHandler(index) {
       this.activeContactIndex = index;
       this.updateScroll = true;
@@ -382,6 +394,66 @@ const app = createApp({
 
       textareaEl.style.height = Math.min(textareaEl.scrollHeight, parseInt(getComputedStyle(textareaEl).lineHeight) * maxRows) + "px";
     },
+
+    rightClickOnContact(event, contact, index) {
+      event.preventDefault();
+
+      let contextmenuEl = document.querySelector(".contextmenu");
+
+      if (contextmenuEl) contextmenuEl.remove();
+
+      contextmenuEl = document.createElement("ul");
+      contextmenuEl.classList.add("contextmenu");
+      contextmenuEl.style.top = event.pageY + "px";
+      contextmenuEl.style.left = event.pageX + "px";
+
+      const deleteEl = document.createElement("il");
+      deleteEl.innerText = `Cencella chat di ${contact.name}`;
+
+      contextmenuEl.append(deleteEl);
+      document.querySelector("body").append(contextmenuEl);
+
+      deleteEl.addEventListener("click", () => {
+        contextmenuEl.remove();
+
+        if (contact == this.activeContact) {
+          let mappedContacts = this.contacts.map((contact, i) => {
+            return [i, contact.order, contact.onChat];
+          });
+
+          mappedContacts = mappedContacts.filter((contact) => {
+            return contact[2];
+          });
+
+          mappedContacts.sort(function (a, b) {
+            return b[1] - a[1];
+          });
+
+          let resultIndex;
+          mappedContacts.forEach((originContact, index) => {
+            if (mappedContacts[1] && index == 0 && originContact[1] == contact.order) resultIndex = mappedContacts[1][0];
+            if (originContact[1] <= contact.order) return;
+            resultIndex = originContact[0];
+          });
+        }
+
+        contact.onChat = false;
+        if (resultIndex) {
+          this.contactClickHandler(resultIndex);
+        }
+        // else {
+        //   this.noChats = true;
+        // }
+
+        // -----------
+      });
+
+      window.addEventListener("click", function clickOutside(event) {
+        if (event.target.parentElement != contextmenuEl) contextmenuEl.remove();
+        window.removeEventListener("click", clickOutside);
+        console.log("test");
+      });
+    },
   },
 
   // ...
@@ -400,6 +472,8 @@ const app = createApp({
     }
 
     this.writingBarInputHandler();
+
+    // document.querySelector(".contextmenu").remove;
 
     // console.log("updated");
   },

@@ -59,6 +59,27 @@
 
 /* ---------------------------------------- */
 
+.contextmenu {
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0px 0px 4px 0px #9f9f9f;
+}
+
+.contextmenu > * {
+  padding: 5px 40px;
+  margin: 0;
+  cursor: pointer;
+  background-color: var(--wrapper-primary-color);
+}
+
+.contextmenu > *:hover {
+  background-color: rgb(245, 245, 245);
+}
+
 .container {
   max-width: 1500px;
 }
@@ -171,6 +192,11 @@
   overflow: hidden;
 }
 
+#user-wrapper.bar .fa-message {
+  color: var(--icon-primary-color);
+  cursor: pointer;
+}
+
 #threads-overlayer,
 #thread-messages {
   background-color: var(--wrapper-primary-color);
@@ -178,16 +204,11 @@
   overflow: auto;
 }
 
-/* .test {
-  overflow: auto;
-  flex-grow: 1;
-  background-color: var(--wrapper-primary-color);
-} */
-
 #threads-wrapper {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
+  position: relative;
 }
 
 #threads-wrapper > .thread {
@@ -199,6 +220,23 @@
 
   border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
   cursor: pointer;
+}
+
+#threads-wrapper > .thread.address-book {
+  height: 60px;
+}
+
+#address-book-title {
+  position: sticky;
+  top: 0;
+
+  text-align: center;
+  font-weight: bold;
+
+  padding-top: var(--space-s);
+  padding-bottom: var(--space-s);
+
+  background-color: var(--wrapper-primary-color);
 }
 
 #threads-wrapper > .thread:hover {

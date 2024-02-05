@@ -51,7 +51,7 @@
               </div>
               <div class="options-wrapper">
                 <i class="fa-solid fa-circle-notch"></i>
-                <i class="fa-solid fa-message"></i>
+                <i class="fa-solid fa-message" @click="toggleAddressBook"></i>
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </div>
             </div>
@@ -70,10 +70,9 @@
                 <input v-model="searchText" type="text" class="form-control" placeholder="Search" aria-label="Search" @input="setContactVisibility()" />
               </div>
             </div>
-
             <div id="threads-overlayer">
               <div id="threads-wrapper">
-                <div v-for="(contact, index) in contacts" v-show="contact.visible && contact.onChat" class="thread" :class="contact == activeContact ? 'active' : ''" :style="`order: ${contact.order}`" @click="contactClickHandler(index)">
+                <div v-if="!addressBook" v-for="(contact, index) in contacts" v-show="contact.visible && contact.onChat" class="thread" :class="contact == activeContact ? 'active' : ''" :style="`order: ${contact.order}`" @click="contactClickHandler(index)" @contextmenu="rightClickOnContact($event, contact, index)">
                   <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
                   <div class="user-details h-100">
                     <div class="contact-name">
@@ -84,6 +83,17 @@
                   <div v-if="isSentToday(getLastMessage(contact))" class="last-msg-date">{{getTime(getLastMessage(contact))}}</div>
                   <div v-else class="last-msg-date">{{getDayTime(getLastMessage(contact))}}</div>
                 </div>
+
+                <div v-else v-for="(contact, index) in contacts" v-show="contact.visible" class="thread" :class="addressBook ? 'address-book' : ''" @click="contactAddressClickHandler(contact, index)">
+                  <img :src="srcToJpg(contact.avatar)" :alt="contact.name + ' picture'" class="avatar" />
+                  <div class="user-details h-100">
+                    <div class="contact-name">
+                      <div class="title">{{contact.name}}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div v-if="addressBook" id="address-book-title">Rubrica</div>
               </div>
             </div>
           </div>
