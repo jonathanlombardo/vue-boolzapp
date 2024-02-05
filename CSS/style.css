@@ -178,6 +178,11 @@
   overflow: auto;
 }
 
+#threads-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
 #threads-wrapper > .thread {
   height: var(--thread-block-height);
   display: flex;
@@ -186,6 +191,15 @@
   padding: var(--space-s);
 
   border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color);
+  cursor: pointer;
+}
+
+#threads-wrapper > .thread:hover {
+  background-color: #8ed9fc60;
+}
+
+#threads-wrapper > .thread.active {
+  background-color: #8ed9fc80;
 }
 
 #threads-wrapper > .thread .user-details {
@@ -298,8 +312,16 @@ message-date */
   gap: var(--space-m);
   padding-left: var(--space-m);
   padding-right: var(--space-m);
+  /* padding: var(--space-m); */
+  height: auto;
 }
 
 #writing-wrapper i {
   color: var(--icon-primary-color);
+}
+
+#writing-wrapper textarea {
+  resize: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

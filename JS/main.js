@@ -171,6 +171,9 @@ const app = createApp({
 
       searchText: "",
       activeContactIndex: 0,
+      orderIndex: 0,
+      updateScroll: false,
+      updateThreadScroll: false,
     };
   },
 
@@ -183,6 +186,11 @@ const app = createApp({
   },
 
   methods: {
+    contactClickHandler(index) {
+      this.activeContactIndex = index;
+      this.updateScroll = true;
+    },
+
     getTime(message) {
       return `${this.getDate(message).hour}:${this.getDate(message).minute}`;
     },
@@ -291,14 +299,20 @@ const app = createApp({
     sendMessage() {
       if (this.activeContact.draft.trim() == "") return;
 
+      const contact = this.activeContact;
+
       const message = {
         date: this.getNowString(),
-        message: this.activeContact.draft,
+        message: contact.draft,
         status: "sent",
       };
 
-      this.activeContact.messages.push(message);
-      this.activeContact.draft = "";
+      contact.messages.push(message);
+      contact.draft = "";
+      contact.order = this.orderIndex + 1;
+      this.orderIndex++;
+      this.updateThreadScroll = true;
+      this.updateScroll = true;
 
       setTimeout(() => {
         let text;
@@ -330,7 +344,10 @@ const app = createApp({
           status: "received",
         };
 
-        this.activeContact.messages.push(answer);
+        contact.messages.push(answer);
+        contact.order = this.orderIndex + 1;
+        this.orderIndex++;
+        if (contact == this.activeContact) this.updateScroll = true;
       }, 1000);
     },
 
@@ -342,18 +359,89 @@ const app = createApp({
       const text = message.message;
       navigator.clipboard.writeText(text);
     },
+
+    scrollThreads() {
+      const threadsWrapper = document.querySelector("#threads-wrapper");
+      threadsWrapper.scrollTop = threadsWrapper.scrollHeight * -1;
+    },
+
+    scrollMessages() {
+      const msgWrapper = document.querySelector("#thread-messages");
+      msgWrapper.scrollTop = msgWrapper.scrollHeight;
+    },
+
+    writingBarInputHandler() {
+      const textareaEl = document.querySelector("#writing-wrapper textarea");
+      const maxRows = 4;
+      textareaEl.style.height = "auto";
+
+      textareaEl.style.height = Math.min(textareaEl.scrollHeight, parseInt(getComputedStyle(textareaEl).lineHeight) * maxRows) + "px";
+    },
   },
 
   // ...
 
+  beforeMount() {},
+
   updated() {
-    const wrapper = document.querySelector("#thread-messages");
-    wrapper.scrollTop = wrapper.clientHeight;
+    if (this.updateScroll) {
+      this.scrollMessages();
+      this.updateScroll = false;
+    }
+
+    if (this.updateThreadScroll) {
+      this.scrollThreads();
+      this.updateThreadScroll = false;
+    }
+
+    this.writingBarInputHandler();
+
+    // console.log("updated");
   },
 
   mounted() {
-    const wrapper = document.querySelector("#thread-messages");
-    wrapper.scrollTop = wrapper.clientHeight;
+    // scroll thread messages wrapper
+
+    this.scrollMessages();
+    this.scrollThreads();
+
+    // set drafts
+
+    this.contacts.forEach((contact) => {
+      contact.draft = "";
+    });
+
+    // set threads order
+
+    const orders = this.contacts.map((contact, index) => {
+      const lastMsg = this.getLastMessage(contact);
+      let order;
+      if (lastMsg) {
+        const msgDate = this.getDate(lastMsg);
+        order = msgDate.year + msgDate.month + msgDate.day + msgDate.hour + msgDate.minute + msgDate.second;
+        order = parseInt(order);
+      }
+
+      return [index, order];
+    });
+
+    orders.sort(function (a, b) {
+      return a[1] - b[1];
+    });
+
+    const finalOrder = orders.map((order, index) => {
+      order[1] = index;
+      return order;
+    });
+
+    this.activeContactIndex = finalOrder[finalOrder.length - 1][0];
+    this.orderIndex = finalOrder[finalOrder.length - 1][1];
+
+    finalOrder.forEach((order) => {
+      const contacts = this.contacts;
+
+      contacts[order[0]].order = order[1];
+    });
   },
 });
 
