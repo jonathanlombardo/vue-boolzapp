@@ -343,8 +343,6 @@ const app = createApp({
         return { role, content };
       });
 
-      console.log("messages for GPT: ", messages);
-
       messages.unshift({ role: "user", content: `rivolgiti a me come ${this.userName} e a te stesso come ${contact.name}` });
 
       return messages;
