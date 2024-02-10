@@ -4,6 +4,8 @@ const app = createApp({
   data() {
     return {
       userName: "Jonathan Lombardo",
+      apiKey,
+      gptModel,
 
       contacts: [
         {
@@ -350,7 +352,7 @@ const app = createApp({
 
     fetchGPTMessage(contact) {
       const data = {
-        model: "gpt-4-turbo-preview",
+        model: gptModel,
         messages: this.setGPTMessageList(contact),
         response_format: { type: "text" },
         temperature: 1,
@@ -360,7 +362,7 @@ const app = createApp({
         presence_penalty: 0,
       };
       const headers = {
-        Authorization: `Bearer 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`,
+        Authorization: `Bearer ${this.apiKey}`,
         "Content-Type": "application/json",
       };
 

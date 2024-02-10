@@ -1,5 +1,15 @@
 # Boolzapp
 
+> ##### _Utilizzare GPT per la risposta nelle chat_
+>
+> _Per fare in modo che ChatGPT risponda nelle vs conversazioni_
+>
+> - _Individua il file ApiKey.js nella root_
+> - _Modifica il valore `my-API-KEY` con la tua ApiKey OpenAI_
+> - _Salva e avvia_
+>
+> ---
+
 ##### Nome repo:
 
 ```
