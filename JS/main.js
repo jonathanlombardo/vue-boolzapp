@@ -316,6 +316,8 @@ const app = createApp({
     sendMessage() {
       if (this.activeContact.draft.trim() == "") return;
 
+      this.activeContact.typing = true;
+
       const contact = this.activeContact;
 
       const message = {
@@ -331,41 +333,79 @@ const app = createApp({
       this.updateThreadScroll = true;
       this.updateScroll = true;
 
-      setTimeout(() => {
-        let text;
+      this.fetchGPTMessage(contact);
+    },
 
-        switch (getRandomNumber(6)) {
-          case 1:
-            text = "Sono un bot, non posso rispondere";
-            break;
-          case 2:
-            text = "Come scusa?";
-            break;
-          case 3:
-            text = "Mi sa che hai sbagliato chat!";
-            break;
-          case 4:
-            text = "uummm... interessante";
-            break;
-          case 5:
-            text = "Vai a disturbare qualcun altro";
-            break;
-          case 6:
-            text = "Non ho capito, puoi ripetere?";
-            break;
-        }
+    setGPTMessageList(contact) {
+      const messages = contact.messages.map((mex) => {
+        const role = mex.status == "sent" ? "user" : "assistant";
+        const content = mex.message;
+        return { role, content };
+      });
 
-        const answer = {
-          date: this.getNowString(),
-          message: text,
-          status: "received",
-        };
+      console.log("messages for GPT: ", messages);
 
-        contact.messages.push(answer);
-        contact.order = this.orderIndex + 1;
-        this.orderIndex++;
-        if (contact == this.activeContact) this.updateScroll = true;
-      }, 1000);
+      messages.unshift({ role: "user", content: `rivolgiti a me come ${this.userName} e a te stesso come ${contact.name}` });
+
+      return messages;
+    },
+
+    fetchGPTMessage(contact) {
+      const data = {
+        model: "gpt-4-turbo-preview",
+        messages: this.setGPTMessageList(contact),
+        response_format: { type: "text" },
+        temperature: 1,
+        max_tokens: 256,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      };
+      const headers = {
+        Authorization: `Bearer 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`,
+        "Content-Type": "application/json",
+      };
+
+      const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://api.openai.com/v1/chat/completions",
+        headers,
+        data,
+      };
+
+      axios
+        .request(config)
+        .then((response) => {
+          const answer = response.data.choices[0].message.content.trim();
+
+          const answerMsg = {
+            date: this.getNowString(),
+            message: answer,
+            status: "received",
+          };
+
+          contact.messages.push(answerMsg);
+          contact.order = this.orderIndex + 1;
+          this.orderIndex++;
+          if (contact == this.activeContact) this.updateScroll = true;
+
+          contact.typing = false;
+        })
+        .catch((error) => {
+          console.error("Si è verificato un errore durante la richiesta al server OpenAI:", error);
+
+          const answerMsg = {
+            date: this.getNowString(),
+            message: "Mi spiace, non ho capito. Potresti ripetere?",
+            status: "received",
+          };
+
+          contact.messages.push(answerMsg);
+          contact.order = this.orderIndex + 1;
+          this.orderIndex++;
+          if (contact == this.activeContact) this.updateScroll = true;
+        });
     },
 
     deleteMessage(contact, msgIndex) {
