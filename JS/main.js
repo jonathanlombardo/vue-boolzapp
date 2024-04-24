@@ -405,6 +405,8 @@ const app = createApp({
           contact.order = this.orderIndex + 1;
           this.orderIndex++;
           if (contact == this.activeContact) this.updateScroll = true;
+
+          contact.typing = false;
         });
     },
 
